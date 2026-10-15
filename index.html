@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#160f20">
 <title>La mulți ani, Mădălina! 🎂</title>
 
 <style>
@@ -16,7 +17,7 @@
 body {
   min-height: 100vh;
   overflow-x: hidden;
-  background: radial-gradient(ellipse at top, #47213e, #160f20 65%, #08080f);
+  background: radial-gradient(ellipse at top, #572544, #160f20 65%, #08080f);
   color: white;
   font-family: Georgia, serif;
   text-align: center;
@@ -46,13 +47,13 @@ body {
   z-index: 1;
   width: min(100% - 32px, 650px);
   margin: auto;
-  padding: 65px 0 45px;
+  padding: 55px 0 45px;
 }
 
 .label {
   color: #f4c5d9;
   text-transform: uppercase;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   font: 11px Arial, sans-serif;
 }
 
@@ -74,7 +75,7 @@ h1 {
 }
 
 .cake {
-  margin: 30px auto 24px;
+  margin: 25px auto 20px;
   font-size: 90px;
   filter: drop-shadow(0 0 24px #ed83b755);
   animation: float 3s ease-in-out infinite;
@@ -83,6 +84,20 @@ h1 {
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
+}
+
+.music-player {
+  margin: 20px auto 30px;
+}
+
+.music-player button {
+  margin-top: 0;
+}
+
+#musicStatus {
+  margin-top: 12px;
+  color: #e8bfd9;
+  font: 13px Arial, sans-serif;
 }
 
 .line {
@@ -100,7 +115,7 @@ h1 {
 }
 
 button {
-  margin-top: 30px;
+  margin-top: 28px;
   padding: 15px 25px;
   border: 1px solid #e9c78e;
   border-radius: 40px;
@@ -166,6 +181,13 @@ footer {
   pointer-events: none;
   z-index: 5;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
 </style>
 </head>
 
@@ -174,17 +196,34 @@ footer {
 <canvas id="confetti"></canvas>
 
 <main class="container">
+
   <p class="label">O zi specială • Un om special</p>
 
   <h1>La mulți ani,<br>Mădălina! ✨</h1>
 
   <p class="subtitle">
     Astăzi este despre tine.<br>
-    Despre zâmbetul tău și toate lucrurile frumoase
-    care te așteaptă.
+    Despre zâmbetul tău și toate lucrurile
+    frumoase care te așteaptă.
   </p>
 
   <div class="cake">🎂</div>
+
+  <div class="music-player">
+    <button id="musicBtn" onclick="toggleMusic()">
+      🎵 Pornește Happy Birthday
+    </button>
+
+    <p id="musicStatus">
+      O melodie specială pentru tine, Mădălina 💗
+    </p>
+  </div>
+
+  <audio id="birthdayMusic" loop preload="none">
+    <source
+      src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      type="audio/mpeg">
+  </audio>
 
   <div class="line"></div>
 
@@ -195,9 +234,14 @@ footer {
     <br><br>
     Să ai parte de oameni frumoși,
     vise împlinite și motive să fii fericită
-    în fiecare zi. Iar viața să-ți ofere
-    surprize mai frumoase decât ai îndrăznit
-    vreodată să-ți imaginezi. 🌷
+    în fiecare zi.
+    <br><br>
+    Fie ca toate dorințele tale să devină
+    realitate, iar fiecare zi să-ți aducă
+    ceva magic. 🌷
+    <br><br>
+    Meriți tot ce este mai frumos
+    în această lume! ❤️
   </p>
 
   <button id="surpriseBtn" onclick="showSurprise()">
@@ -207,22 +251,53 @@ footer {
   <div id="secret">
     ✨ Un mic secret pentru tine ✨
     <br><br>
-    Nu în fiecare zi întâlnim oameni
-    care merită un moment special.
+    Unele persoane merită mai mult decât
+    un simplu mesaj de felicitare.
+    Merită un moment creat special pentru ele.
+    <br><br>
     Astăzi, acest moment este al tău.
+    Sper să zâmbești de fiecare dată
+    când îți amintești de această zi.
     <br><br>
-    Zâmbește, bucură-te de ziua ta
-    și nu uita cât de frumoasă poate fi viața.
-    <br><br>
-    La mulți ani, Mădălina! ❤️
+    La mulți ani, Mădălina! 🎂💕
+    <br>
+    Să fii mereu fericită!
   </div>
 
   <footer>
-    FĂCUT CU ✨ PENTRU O ZI DE NEUITAT
+    FĂCUT CU ❤️ PENTRU MĂDĂLINA
   </footer>
+
 </main>
 
 <script>
+const music = document.getElementById("birthdayMusic");
+const musicBtn = document.getElementById("musicBtn");
+const musicStatus = document.getElementById("musicStatus");
+
+async function toggleMusic() {
+  if (music.paused) {
+    try {
+      await music.play();
+      musicBtn.textContent = "⏸ Oprește muzica";
+      musicStatus.textContent =
+        "La mulți ani, Mădălina! 🎶💗";
+    } catch (error) {
+      musicStatus.textContent =
+        "Verifică conexiunea la internet și încearcă din nou.";
+    }
+  } else {
+    music.pause();
+    musicBtn.textContent = "🎵 Pornește muzica";
+    musicStatus.textContent =
+      "Melodia ta specială te așteaptă 💗";
+  }
+}
+
+music.addEventListener("ended", () => {
+  musicBtn.textContent = "🎵 Pornește muzica";
+});
+
 function showSurprise() {
   const secret = document.getElementById("secret");
   const button = document.getElementById("surpriseBtn");
@@ -243,9 +318,9 @@ function createHeart() {
   heart.className = "heart";
 
   const symbols = ["💗", "✨", "💕", "🌸", "💖"];
-  heart.textContent = symbols[
-    Math.floor(Math.random() * symbols.length)
-  ];
+
+  heart.textContent =
+    symbols[Math.floor(Math.random() * symbols.length)];
 
   heart.style.left = Math.random() * 100 + "vw";
   heart.style.fontSize = (14 + Math.random() * 20) + "px";
@@ -265,6 +340,7 @@ function launchConfetti() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
+  const colors = ["#f4c5d9", "#e9c78e", "#ffffff", "#dca6ef"];
   const pieces = [];
 
   for (let i = 0; i < 150; i++) {
@@ -274,9 +350,7 @@ function launchConfetti() {
       size: 4 + Math.random() * 7,
       speed: 2 + Math.random() * 5,
       drift: Math.random() * 3 - 1.5,
-      color: ["#f4c5d9", "#e9c78e", "#ffffff", "#dca6ef"][
-        Math.floor(Math.random() * 4)
-      ]
+      color: colors[Math.floor(Math.random() * colors.length)]
     });
   }
 
@@ -288,6 +362,7 @@ function launchConfetti() {
     pieces.forEach(p => {
       ctx.fillStyle = p.color;
       ctx.fillRect(p.x, p.y, p.size, p.size);
+
       p.y += p.speed;
       p.x += p.drift;
     });
@@ -312,5 +387,4 @@ window.addEventListener("resize", () => {
 </script>
 
 </body>
-  </html>
-  
+</html>
