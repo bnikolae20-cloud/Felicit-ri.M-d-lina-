@@ -91,10 +91,10 @@ h1 {
 }
 
 #musicStatus {
-  margin-top: 12px;
+  margin: 12px auto 0;
   color: #e8bfd9;
   font: 13px Arial, sans-serif;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 .line {
@@ -128,6 +128,10 @@ button {
 button:hover {
   transform: translateY(-3px);
   box-shadow: 0 0 30px #e4a5ca66;
+}
+
+button:active {
+  transform: scale(.97);
 }
 
 #secret {
@@ -181,7 +185,7 @@ footer {
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
   }
 }
@@ -207,17 +211,22 @@ footer {
   <div class="cake">🎂</div>
 
   <div class="music-player">
-    <button id="musicBtn" onclick="toggleMusic()">
+    <button id="musicBtn" type="button" onclick="toggleMusic()">
       🎵 Pornește muzica
     </button>
 
-    <p id="musicStatus">
+    <p id="musicStatus" aria-live="polite">
       O melodie specială pentru tine, Mădălina 💗
     </p>
   </div>
 
-  <audio id="birthdayMusic" loop preload="auto">
-    <source src="1592c076_95f4_4782_9ae9_fed4f76ea988NA_140_audio_only_medium" type="audio/mp4">
+  <!-- Fișierul audio trebuie să fie în aceeași
+       locație cu index.html. -->
+
+  <audio id="birthdayMusic" loop preload="none">
+    <source
+      src="1592c076_95f4_4782_9ae9_fed4f76ea988NA_140_audio_only_medium.m4a"
+      type="audio/mp4">
   </audio>
 
   <div class="line"></div>
@@ -227,33 +236,42 @@ footer {
     îmbrățișări sincere și momente
     pe care să le păstrezi în suflet.
     <br><br>
+
     Să ai parte de oameni frumoși,
     vise împlinite și motive să fii fericită
     în fiecare zi.
     <br><br>
+
     Fie ca toate dorințele tale să devină
     realitate, iar fiecare zi să-ți aducă
     ceva magic. 🌷
     <br><br>
+
     Meriți tot ce este mai frumos
     în această lume! ❤️
   </p>
 
-  <button id="surpriseBtn" onclick="showSurprise()">
+  <button
+    id="surpriseBtn"
+    type="button"
+    onclick="showSurprise()">
     💌 Deschide surpriza
   </button>
 
   <div id="secret">
     ✨ Un mic secret pentru tine ✨
     <br><br>
+
     Unele persoane merită mai mult decât
     un simplu mesaj de felicitare.
     Merită un moment creat special pentru ele.
     <br><br>
+
     Astăzi, acest moment este al tău.
     Sper să zâmbești de fiecare dată
     când îți amintești de această zi.
     <br><br>
+
     La mulți ani, Mădălina! 🎂💕
     <br>
     Să fii mereu fericită!
@@ -273,16 +291,26 @@ const musicStatus = document.getElementById("musicStatus");
 async function toggleMusic() {
   if (music.paused) {
     try {
+      musicStatus.textContent = "Se încarcă melodia... 🎶";
+
       await music.play();
+
       musicBtn.textContent = "⏸ Oprește muzica";
       musicStatus.textContent =
         "La mulți ani, Mădălina! 🎶💗";
+
     } catch (error) {
+      console.error("Eroare audio:", error);
+
       musicStatus.textContent =
-        "Nu se poate reda muzica. Verifică dacă ai încărcat birthday.m4a în GitHub.";
+        "Nu pornește muzica. Verifică numele fișierului și formatul audio.";
+
+      musicBtn.textContent = "🎵 Încearcă din nou";
     }
+
   } else {
     music.pause();
+
     musicBtn.textContent = "🎵 Pornește muzica";
     musicStatus.textContent =
       "Melodia ta specială te așteaptă 💗";
@@ -331,7 +359,13 @@ function launchConfetti() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const colors = ["#f4c5d9", "#e9c78e", "#ffffff", "#dca6ef"];
+  const colors = [
+    "#f4c5d9",
+    "#e9c78e",
+    "#ffffff",
+    "#dca6ef"
+  ];
+
   const pieces = [];
 
   for (let i = 0; i < 150; i++) {
@@ -353,6 +387,7 @@ function launchConfetti() {
     pieces.forEach(p => {
       ctx.fillStyle = p.color;
       ctx.fillRect(p.x, p.y, p.size, p.size);
+
       p.y += p.speed;
       p.x += p.drift;
     });
@@ -371,6 +406,7 @@ function launchConfetti() {
 
 window.addEventListener("resize", () => {
   const canvas = document.getElementById("confetti");
+
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
