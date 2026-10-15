@@ -90,14 +90,11 @@ h1 {
   margin: 20px auto 30px;
 }
 
-.music-player button {
-  margin-top: 0;
-}
-
 #musicStatus {
   margin-top: 12px;
   color: #e8bfd9;
   font: 13px Arial, sans-serif;
+  line-height: 1.6;
 }
 
 .line {
@@ -211,7 +208,7 @@ footer {
 
   <div class="music-player">
     <button id="musicBtn" onclick="toggleMusic()">
-      🎵 Pornește Happy Birthday
+      🎵 Pornește muzica
     </button>
 
     <p id="musicStatus">
@@ -219,10 +216,8 @@ footer {
     </p>
   </div>
 
-  <audio id="birthdayMusic" loop preload="none">
-    <source
-      src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-      type="audio/mpeg">
+  <audio id="birthdayMusic" loop preload="auto">
+    <source src="birthday.m4a" type="audio/mp4">
   </audio>
 
   <div class="line"></div>
@@ -284,7 +279,7 @@ async function toggleMusic() {
         "La mulți ani, Mădălina! 🎶💗";
     } catch (error) {
       musicStatus.textContent =
-        "Verifică conexiunea la internet și încearcă din nou.";
+        "Nu se poate reda muzica. Verifică dacă ai încărcat birthday.m4a în GitHub.";
     }
   } else {
     music.pause();
@@ -293,10 +288,6 @@ async function toggleMusic() {
       "Melodia ta specială te așteaptă 💗";
   }
 }
-
-music.addEventListener("ended", () => {
-  musicBtn.textContent = "🎵 Pornește muzica";
-});
 
 function showSurprise() {
   const secret = document.getElementById("secret");
@@ -362,7 +353,6 @@ function launchConfetti() {
     pieces.forEach(p => {
       ctx.fillStyle = p.color;
       ctx.fillRect(p.x, p.y, p.size, p.size);
-
       p.y += p.speed;
       p.x += p.drift;
     });
